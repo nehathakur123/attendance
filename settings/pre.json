@@ -1,0 +1,5 @@
+{
+  "PrivateKeyPath": "/home/gargivanu/work/src/github.com/nehathakur123/attendance/settings/keys/private_key",
+  "PublicKeyPath": "/home/gargivanu/work/src/github.com/nehathakur123/attendance/settings/keys/public_key.pub",
+  "JWTExpirationDelta": 72
+}
