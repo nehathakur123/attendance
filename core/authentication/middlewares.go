@@ -3,8 +3,11 @@ package authentication
 import (
 	"fmt"
 	jwt "github.com/dgrijalva/jwt-go"
+	// "github.com/nehathakur123/attendance/services/models"
 	"net/http"
 )
+
+// var requestUser *models.User
 
 func RequireTokenAuthentication(rw http.ResponseWriter, req *http.Request, next http.HandlerFunc) {
 	authBackend := InitJWTAuthenticationBackend()

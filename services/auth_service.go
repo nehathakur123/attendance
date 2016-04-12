@@ -2,6 +2,7 @@ package services
 
 import (
 	"encoding/json"
+	"fmt"
 	jwt "github.com/dgrijalva/jwt-go"
 	"github.com/nehathakur123/attendance/api/parameters"
 	"github.com/nehathakur123/attendance/core/authentication"
@@ -11,7 +12,7 @@ import (
 
 func Login(requestUser *models.User) (int, []byte) {
 	authBackend := authentication.InitJWTAuthenticationBackend()
-
+	fmt.Println(requestUser)
 	if authBackend.Authenticate(requestUser) {
 		token, err := authBackend.GenerateToken(requestUser.UUID)
 		if err != nil {

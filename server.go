@@ -16,10 +16,4 @@ func main() {
 	n.UseHandler(router)
 	http.ListenAndServe(":5000", n)
 
-	/*result := AuthenticateLocal("rupesh.thakur", "p@ssw0rdas")
-	if result {
-		fmt.Println("SUCCESS")
-	} else {
-		fmt.Println("FAILED")
-	}*/
 }

@@ -10,9 +10,14 @@ import (
 	"github.com/nehathakur123/attendance/services/models"
 	"github.com/nehathakur123/attendance/settings"
 	// "go-uuid/uuid"
-	"github.com/pborman/uuid"
-	"golang.org/x/crypto/bcrypt"
+	"fmt"
+	//"github.com/pborman/uuid"
+	"bytes"
+	//"golang.org/x/crypto/bcrypt"
+	//"encoding/json"
+	"golang.org/x/crypto/ssh"
 	"os"
+	"strings"
 	"time"
 )
 
@@ -52,8 +57,8 @@ func (backend *JWTAuthenticationBackend) GenerateToken(userUUID string) (string,
 	return tokenString, nil
 }
 
-func (backend *JWTAuthenticationBackend) Authenticate(user *models.User) bool {
-	hashedPassword, _ := bcrypt.GenerateFromPassword([]byte("testing"), 10)
+func (backend *JWTAuthenticationBackend) Authenticate(requestUser *models.User) bool {
+	/*hashedPassword, _ := bcrypt.GenerateFromPassword([]byte("testing"), 10)
 
 	testUser := models.User{
 		UUID:     uuid.New(),
@@ -62,6 +67,49 @@ func (backend *JWTAuthenticationBackend) Authenticate(user *models.User) bool {
 	}
 
 	return user.Username == testUser.Username && bcrypt.CompareHashAndPassword([]byte(testUser.Password), []byte(user.Password)) == nil
+	*/
+	// &models.User{Username: "rupesh.thakur"}
+	fmt.Println("Hi", requestUser.Username, "End")
+	// return true
+
+	cmd := "/bin/hostname"
+	hostname := "gargivanu-Inspiron-N5010"
+	//username := u.Username
+	//password := u.Password
+
+	config := &ssh.ClientConfig{
+		User: requestUser.Username,
+		Auth: []ssh.AuthMethod{
+			ssh.Password(requestUser.Password),
+		},
+	}
+
+	client, err := ssh.Dial("tcp", "localhost:22", config)
+	if err == nil {
+
+		session, err := client.NewSession()
+		if err != nil {
+			panic("Failed to create session: " + err.Error())
+
+		}
+		defer session.Close()
+
+		var b bytes.Buffer
+		session.Stdout = &b
+		if err := session.Run(cmd); err != nil {
+			panic("Failed to run: " + err.Error())
+		}
+		// fmt.Println(b.String())
+		if strings.TrimSpace(b.String()) == hostname {
+			// fmt.Println("SUCCESS")
+			return true
+		}
+
+	} else {
+		// fmt.Println("FAILED")
+		return false
+	}
+	return false
 }
 
 func (backend *JWTAuthenticationBackend) getTokenRemainingValidity(timestamp interface{}) int {

@@ -2,8 +2,10 @@ package controllers
 
 import (
 	"encoding/json"
+	// "fmt"
 	"github.com/nehathakur123/attendance/services"
 	"github.com/nehathakur123/attendance/services/models"
+	"log"
 	"net/http"
 )
 
@@ -11,6 +13,8 @@ func Login(w http.ResponseWriter, r *http.Request) {
 	requestUser := new(models.User)
 	decoder := json.NewDecoder(r.Body)
 	decoder.Decode(&requestUser)
+	log.Println(requestUser)
+	// fmt.Println(&requestUser, requestUser)
 
 	responseStatus, token := services.Login(requestUser)
 	w.Header().Set("Content-Type", "application/json")
